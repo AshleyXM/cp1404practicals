@@ -24,7 +24,7 @@ def main():
         elif choice == 'a': # add new project
             pass
         elif choice == 'u': # update project
-            pass
+            handle_update_project(projects)
         else:
             print("Invalid choice")
         display_menu()
@@ -73,6 +73,28 @@ def handle_display_projects(projects):
     print("Completed projects:")
     for project in complete_projects:
         print(f"  {project}")
+
+
+def handle_update_project(projects):
+    """Handle updating projects"""
+    for idx, project in enumerate(projects):
+        print(f"{idx} {project}")
+    choice = int(input("Project choice: "))
+    # TODO: Error check the input choice
+    current_project = projects[choice]
+    print(current_project)
+    set_project_info(current_project, 'percentage')
+    set_project_info(current_project, 'priority')
+
+
+def set_project_info(project, info):
+    """Set new percentage or priority for project"""
+    new_info = input(f"New {info.title()}: ")
+    if new_info != '':
+        if info == 'percentage':
+            project.set_percentage(int(new_info))
+        elif info == 'priority':
+            project.set_priority(int(new_info))
 
 
 main()

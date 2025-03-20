@@ -17,3 +17,11 @@ class Project:
 
     def __lt__(self, other):
         return self.priority < other.priority
+
+    def set_percentage(self, new_percentage):
+        """Set percentage with new percentage"""
+        self.completion_percentage = new_percentage
+
+    def set_priority(self, new_priority):
+        """Set priority with new priority"""
+        self.priority = new_priority
