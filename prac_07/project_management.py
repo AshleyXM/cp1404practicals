@@ -31,6 +31,7 @@ def main():
             print("Invalid choice")
         display_menu()
         choice = input(">>> ").lower()
+    handle_quit(projects)
 
 
 def convert_start_date(start_date):
@@ -151,6 +152,14 @@ def handle_save_projects(projects):
     """Handle saving projects"""
     filename = input("Filename: ")
     save_projects(projects, filename)
+
+
+def handle_quit(projects):
+    """Handle quit"""
+    ans = input(f"Would you like to save to {FILENAME}? ").lower()
+    if ans == 'y' or ans == 'yes':
+        save_projects(projects)
+    print("Thank you for using custom-built project management software.")
 
 
 main()
