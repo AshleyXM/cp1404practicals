@@ -2,6 +2,7 @@
 Estimated time:
 Actual time:
 """
+import datetime
 from project import Project
 
 FILENAME = 'projects.txt'
@@ -20,7 +21,7 @@ def main():
         elif choice == 'd': # display projects
             handle_display_projects(projects)
         elif choice == 'f': # filter projects by date
-            pass
+            handle_filter_project(projects)
         elif choice == 'a': # add new project
             handle_add_project(projects)
         elif choice == 'u': # update project
@@ -31,6 +32,11 @@ def main():
         choice = input(">>> ").lower()
 
 
+def convert_start_date(start_date):
+    """Convert string start date into datetime"""
+    return datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
+
+
 def load_projects(filename=FILENAME):
     """Load projects from file"""
     projects = []
@@ -38,8 +44,9 @@ def load_projects(filename=FILENAME):
     in_file.readline()
     for line in in_file:
         parts = line.strip().split('\t')
+        converted_start = convert_start_date(parts[1])
         # name, start date, priority, cost, completion percentage
-        project = Project(parts[0], parts[1], int(parts[2]), float(parts[3]), int(parts[4]))
+        project = Project(parts[0], converted_start, int(parts[2]), float(parts[3]), int(parts[4]))
         projects.append(project)
     in_file.close()
     return projects
@@ -102,11 +109,24 @@ def handle_add_project(projects):
     print("Let's add a new project")
     name = input("Name: ")
     start = input("Start date (dd/mm/yy): ")
+    converted_start = convert_start_date(start)
     priority = int(input("Priority: "))
     cost = float(input("Cost estimate: $"))
     percentage = int(input("Percentage complete: "))
-    new_project = Project(name, start, priority, cost, percentage)
+    new_project = Project(name, converted_start, priority, cost, percentage)
     projects.append(new_project)
+
+
+def handle_filter_project(projects):
+    """Handle filtering projects by date"""
+    input_date = input("Show projects that start after date (dd/mm/yy): ")
+    converted_input_date = convert_start_date(input_date)
+    result_projects = []
+    for project in projects:
+        if project.start_date > converted_input_date:
+            result_projects.append(project)
+    for project in result_projects:
+        print(project)
 
 
 main()
